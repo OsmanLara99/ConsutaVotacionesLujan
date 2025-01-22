@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta Datos de Votación</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            text-align: center;
+        }
+        header {
+            background-color: #0066cc; /* Color del partido */
+            padding: 20px;
+        }
+        header img {
+            max-width: 150px;
+            height: auto;
+        }
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .candidates img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #004c99;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo-partido.png" alt="Logo del Partido"> <!-- Cambia este archivo por tu logo -->
+    </header>
+    <div class="container">
+        <div class="candidates">
+            <img src="foto-candidatos.jpg" alt="Foto de los Candidatos"> <!-- Cambia este archivo por tu foto -->
+        </div>
+        <h1>Consulta tus datos de votación</h1>
+        <form id="consultaForm">
+            <input type="text" id="identity" name="identity" placeholder="Ingresa tu número de identidad" required>
+            <button type="submit">Consultar</button>
+        </form>
+        <div id="resultado"></div>
+    </div>
+    <script>
+        document.getElementById('consultaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const identidad = document.getElementById('identity').value;
+
+            // Aquí va la lógica para conectar con la página del CNE
+            fetch(`https://censo.cne.hn:81`) // Este es un ejemplo, ajusta la conexión según sea necesario
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('resultado').innerHTML = `
+                        <p><strong>Nombre:</strong> ${data.nombre}</p>
+                        <p><strong>Centro de Votación:</strong> ${data.centro}</p>
+                        <p><strong>Dirección:</strong> ${data.direccion}</p>
+                    `;
+                })
+                .catch(error => {
+                    document.getElementById('resultado').innerHTML = `
+                        <p style="color: red;">Hubo un error al realizar la consulta. Intente de nuevo.</p>
+                    `;
+                });
+        });
+    </script>
+</body>
+</html>
